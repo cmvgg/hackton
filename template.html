@@ -14,12 +14,18 @@
   </style>
 </head>
 <body>
-  <!-- Contenedor para el mapa -->
   <div id="map"></div>
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
-    // Función para mostrar la notificación
+    // Coordenadas de la zona señalada (un polígono)
+    var zona_coords = [
+      [43.407234, -2.979508],  
+      [45.408234, 5.978508],  
+      [40.408234, -2.980508]
+    ];
+
+    // Función para mostrar una notificación
     function showNotification() {
       if (!("Notification" in window)) {
         alert("Este navegador no soporta notificaciones.");
@@ -34,45 +40,65 @@
       }
     }
 
-    // Función para comprobar si una posición está dentro de la zona señalada
-    function isInsideZone(position) {
-      var lat = position.coords.latitude;
-      var lon = position.coords.longitude;
+    // Función para inicializar el mapa
+    function initMap() {
+      var map = L.map('map').setView([41.944544, -2.314262], 8);  // Centramos el mapa en una ubicación inicial
 
-      var zona_coords = [
-          [43.3980, -2.9790],
-          [43.3980, -2.9750],
-          [43.3950, -2.9750],
-          [43.3950, -2.9790]
-      ];
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
 
-      var polygon = L.polygon(zona_coords);
+      // Crea un polígono para representar la zona señalada
+      var polygon = L.polygon(zona_coords, { color: 'blue', fillOpacity: 0.3 }).addTo(map);
+      polygon.bindPopup("Zona señalada");  // Agrega un popup con un mensaje a la zona señalada
 
-      if (polygon.contains([lat, lon])) {
+      // Verifica si la posición está dentro de la zona señalada
+      var isInside = isPointInsidePolygon([41.944544, -2.314262], zona_coords);
+
+      // Muestra una notificación si está dentro de la zona señalada
+      if (isInside) {
         showNotification();
       }
+
+      // Crea un marcador para la ubicación actual
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var lat = position.coords.latitude;
+        var lon = position.coords.longitude;
+        var pointToCheck = [lat, lon];
+
+        // Crea un marcador para la ubicación actual
+        var marker = L.marker([lat, lon]).addTo(map);
+        marker.setIcon(L.icon({
+          iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.2/img/marker-icon-2x.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [0, -22]
+        }));
+        marker.bindPopup("Tu ubicación").openPopup();
+      }, function(error) {
+        alert("Error al obtener la ubicación: " + error.message);
+      });
     }
 
-    function getLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.watchPosition(isInsideZone, function(error) {
-          alert("Error al obtener la ubicación: " + error.message);
-        });
-      } else {
-        alert("Geolocalización no es soportada por este navegador.");
+    // Función para verificar si un punto está dentro de un polígono
+    function isPointInsidePolygon(point, vs) {
+      var x = point[0], y = point[1];
+
+      var inside = false;
+      for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+        var xi = vs[i][0], yi = vs[i][1];
+        var xj = vs[j][0], yj = vs[j][1];
+
+        var intersect = ((yi > y) !== (yj > y)) &&
+                        (x < ((xj - xi) * (y - yi)) / (yj - yi) + xi);
+        if (intersect) inside = !inside;
       }
+
+      return inside;
     }
 
-    // Inicializa el mapa
-    var map = L.map('map').setView([43.3970, -2.9770], 14);
-
-    // Carga el mapa de OpenStreetMap
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    // Llama a la función para obtener la ubicación al cargar la página
-    getLocation();
+    // Llama a la función para inicializar el mapa al cargar la página
+    initMap();
   </script>
 </body>
 </html>
