@@ -1,48 +1,117 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Mapa Interactivo</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <style>
-    /* Estilo para el mapa */
-    body, html, #map {
-      height: 100%;
-      margin: 0;
-    }
-  </style>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_6081ddb555ffe5d9bcb9cf5c22d25ada {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
 </head>
 <body>
-  <div id="map"></div>
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script>
-    // Función para obtener la ubicación del dispositivo móvil
-    function getLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-      } else {
-        alert("Geolocalización no es soportada por este navegador.");
-      }
-    }
-
-    // Función para mostrar la posición en el mapa
-    function showPosition(position) {
-      var lat = position.coords.latitude;
-      var lon = position.coords.longitude;
-
-      var map = L.map('map').setView([lat, lon], 14);
-
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
-
-      var marker = L.marker([lat, lon]).addTo(map);
-      marker.bindPopup("Tu ubicación").openPopup();
-    }
-
-    // Llama a la función para obtener la ubicación al cargar la página
-    getLocation();
-  </script>
+    
+    
+            <div class="folium-map" id="map_6081ddb555ffe5d9bcb9cf5c22d25ada" ></div>
+        
 </body>
+<script>
+    
+    
+            var map_6081ddb555ffe5d9bcb9cf5c22d25ada = L.map(
+                "map_6081ddb555ffe5d9bcb9cf5c22d25ada",
+                {
+                    center: [43.397, -2.977],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 14,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_4548fa9437bc6b08991ce45d32b4723e = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca target=\"_blank\" href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca target=\"_blank\" href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_6081ddb555ffe5d9bcb9cf5c22d25ada);
+        
+    
+            var marker_56fd2664ecfe7943443b04bc0b467440 = L.marker(
+                [43.397, -2.977],
+                {}
+            ).addTo(map_6081ddb555ffe5d9bcb9cf5c22d25ada);
+        
+    
+            var icon_5062841c340c364187cce48428d29bc9 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "cloud", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_56fd2664ecfe7943443b04bc0b467440.setIcon(icon_5062841c340c364187cce48428d29bc9);
+        
+    
+        var popup_e4e2c7cb9fe8c9198e778ae9e4f44ac0 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_5310585fac8fdaf6aaa5e99250904f8c = $(`<div id="html_5310585fac8fdaf6aaa5e99250904f8c" style="width: 100.0%; height: 100.0%;">Urduliz, Vizcaya, España</div>`)[0];
+                popup_e4e2c7cb9fe8c9198e778ae9e4f44ac0.setContent(html_5310585fac8fdaf6aaa5e99250904f8c);
+            
+        
+
+        marker_56fd2664ecfe7943443b04bc0b467440.bindPopup(popup_e4e2c7cb9fe8c9198e778ae9e4f44ac0)
+        ;
+
+        
+    
+    
+            var polygon_af8b2426c6fef7a4cd54de45b4515ad4 = L.polygon(
+                [[43.398, -2.979], [43.398, -2.975], [43.395, -2.975], [43.395, -2.979]],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.4, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6081ddb555ffe5d9bcb9cf5c22d25ada);
+        
+    
+        var popup_9194112d7f616824647e64b5716c09f7 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_986320d362eee611b341f7f65c4d13a3 = $(`<div id="html_986320d362eee611b341f7f65c4d13a3" style="width: 100.0%; height: 100.0%;">Zona señalada</div>`)[0];
+                popup_9194112d7f616824647e64b5716c09f7.setContent(html_986320d362eee611b341f7f65c4d13a3);
+            
+        
+
+        polygon_af8b2426c6fef7a4cd54de45b4515ad4.bindPopup(popup_9194112d7f616824647e64b5716c09f7)
+        ;
+
+        
+    
+</script>
 </html>
