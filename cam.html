@@ -6,14 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     /* Estilo para el vídeo y la superposición de AR */
-    #ar-video {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      transform: scaleX(-1); /* Voltear el video horizontalmente para que coincida con la vista de la cámara */
-    }
     #ar-overlay {
       position: absolute;
       top: 50%;
@@ -28,32 +20,17 @@
   </style>
 </head>
 <body>
-  <video id="ar-video" autoplay></video>
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/2.0.8/aframe/build/aframe-ar.js"></script>
+
   <div id="ar-overlay">
     <a-scene embedded arjs>
       <a-marker preset="hiro">
         <!-- Cambiando el cubo rojo por una esfera gris -->
-        <a-sphere color="gray" radius="0.2"></a-sphere>
+        <a-sphere color="gray" radius="0.1"></a-sphere>
       </a-marker>
       <a-camera-static></a-camera-static>
     </a-scene>
   </div>
-
-  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-  <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
-  <script>
-    const video = document.getElementById('ar-video');
-
-    // Accede a la cámara
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(stream => {
-        video.srcObject = stream;
-      })
-      .catch(error => {
-        console.error('Error al acceder a la cámara: ', error);
-      });
-  </script>
 </body>
 </html>
-
-
