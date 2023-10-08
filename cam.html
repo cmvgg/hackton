@@ -13,6 +13,7 @@
       align-items: center;
       height: 100vh;
       background: #f0f0f0;
+      overflow: hidden;
     }
 
     #circle {
@@ -20,6 +21,10 @@
       height: 100px;
       background-color: gray;
       border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
   </style>
 </head>
@@ -27,7 +32,8 @@
   <div id="circle"></div>
 
   <script>
-    // Accede a la cámara frontal
+    const circle = document.getElementById('circle');
+
     async function startCamera() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
@@ -35,6 +41,11 @@
         document.body.appendChild(video);
         video.srcObject = stream;
         video.play();
+
+        // Mostrar el círculo mientras la cámara está activa
+        video.addEventListener('playing', () => {
+          circle.style.display = 'block';
+        });
       } catch (error) {
         console.error('Error al acceder a la cámara: ', error);
       }
@@ -45,5 +56,6 @@
   </script>
 </body>
 </html>
+
 
 
