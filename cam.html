@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Acceso a la Cámara</title>
+  <title>AR con AR.js</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    video {
-      transform: scaleX(-1);
-      display: block;
+    /* Estilo para el vídeo y la superposición de AR */
+    #ar-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
     }
     #ar-overlay {
       position: absolute;
@@ -25,18 +22,27 @@
   </style>
 </head>
 <body>
-  <video id="video" width="640" height="480" autoplay></video>
-  <canvas id="ar-overlay"></canvas>
+  <video id="ar-video" autoplay></video>
+  <div id="ar-overlay">
+    <a-marker preset="hiro">
+      <!-- Cambiando el cubo rojo por una esfera gris -->
+      <a-sphere color="gray" radius="0.25"></a-sphere>
+    </a-marker>
+  </div>
 
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   <script>
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } })
-      .then(function(stream) {
-        var video = document.getElementById('video');
+    const video = document.getElementById('ar-video');
+
+    // Accede a la cámara
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
         video.srcObject = stream;
       })
-      .catch(function(err) {
-        console.error('Error al acceder a la cámara: ', err);
+      .catch(error => {
+        console.error('Error al acceder a la cámara: ', error);
       });
   </script>
 </body>
 </html>
+
