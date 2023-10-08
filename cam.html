@@ -12,13 +12,13 @@
       left: 0;
       width: 100%;
       height: 100%;
+      transform: scaleX(-1); /* Voltear el video horizontalmente para que coincida con la vista de la cámara */
     }
     #ar-overlay {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      /* Centrar la esfera en el centro de la pantalla */
       width: 100%;
       height: 100%;
       display: flex;
@@ -30,10 +30,13 @@
 <body>
   <video id="ar-video" autoplay></video>
   <div id="ar-overlay">
-    <a-marker preset="hiro">
-      <!-- Cambiando el cubo rojo por una esfera gris -->
-      <a-sphere color="gray" radius="0.1"></a-sphere>
-    </a-marker>
+    <a-scene embedded arjs>
+      <a-marker preset="hiro">
+        <!-- Cambiando el cubo rojo por una esfera gris -->
+        <a-sphere color="gray" radius="0.2"></a-sphere>
+      </a-marker>
+      <a-camera-static></a-camera-static>
+    </a-scene>
   </div>
 
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
@@ -52,4 +55,5 @@
   </script>
 </body>
 </html>
+
 
