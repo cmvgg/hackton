@@ -18,6 +18,12 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      /* Centrar la esfera en el centro de la pantalla */
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   </style>
 </head>
@@ -26,11 +32,12 @@
   <div id="ar-overlay">
     <a-marker preset="hiro">
       <!-- Cambiando el cubo rojo por una esfera gris -->
-      <a-sphere color="gray" radius="0.25"></a-sphere>
+      <a-sphere color="gray" radius="0.1"></a-sphere>
     </a-marker>
   </div>
 
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
   <script>
     const video = document.getElementById('ar-video');
 
