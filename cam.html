@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>AR con AR.js</title>
+  <title>Círculo en la Cámara</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    /* Estilo para el vídeo y la superposición de AR */
-    #ar-overlay {
+    /* Estilo para el círculo y la vista de la cámara */
+    #circle-container {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -17,20 +17,56 @@
       justify-content: center;
       align-items: center;
     }
+
+    #circle {
+      width: 100px;
+      height: 100px;
+      background-color: gray;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    #video-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    #video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   </style>
 </head>
 <body>
-  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/2.0.8/aframe/build/aframe-ar.js"></script>
-
-  <div id="ar-overlay">
-    <a-scene embedded arjs>
-      <a-marker preset="hiro">
-        <!-- Cambiando el cubo rojo por un círculo gris -->
-        <a-cylinder color="gray" radius="0.2" height="0.02"></a-cylinder>
-      </a-marker>
-      <a-camera-static></a-camera-static>
-    </a-scene>
+  <div id="circle-container">
+    <div id="circle"></div>
   </div>
+
+  <div id="video-container">
+    <video id="video" autoplay playsinline></video>
+  </div>
+
+  <script>
+    const video = document.getElementById('video');
+
+    // Accede a la cámara frontal
+    async function startCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+        video.srcObject = stream;
+      } catch (error) {
+        console.error('Error al acceder a la cámara: ', error);
+      }
+    }
+
+    // Inicia la cámara al cargar la página
+    window.addEventListener('load', startCamera);
+  </script>
 </body>
 </html>
+
