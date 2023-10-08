@@ -45,10 +45,27 @@
         // Mostrar el círculo mientras la cámara está activa
         video.addEventListener('playing', () => {
           circle.style.display = 'block';
+          monitorLight();  // Monitorear la luz al mostrar la cámara
         });
       } catch (error) {
         console.error('Error al acceder a la cámara: ', error);
       }
+    }
+
+    function monitorLight() {
+      const lightSensor = new AmbientLightSensor();
+      lightSensor.onreading = () => {
+        const illuminance = lightSensor.illuminance;
+        // Puedes ajustar este valor según sea necesario
+        if (illuminance < 10) {
+          alert('Felicidades! La luz está tapada.');
+          window.location.href = 'map.html';  // Redirigir a map.html
+        }
+      };
+      lightSensor.onerror = error => {
+        console.error('Error en el sensor de luz: ', error);
+      };
+      lightSensor.start();
     }
 
     // Inicia la cámara al cargar la página
@@ -56,7 +73,3 @@
   </script>
 </body>
 </html>
-
-
-
-
