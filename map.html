@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mapa Interactivo</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    /* Estilo para el mapa */
+    body, html, #map {
+      height: 100%;
+      margin: 0;
+      position: relative;
+    }
+
+    /* Estilo para el contenedor del botón */
+    .button-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000; /* Para asegurarse de que esté por encima del mapa */
+    }
+
+    /* Estilo para el botón */
+    #character-button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    #character-button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <div class="button-container">
+    <button id="character-button" onclick="goToCharacter()">P</button>
+  </div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    var pointCoords = [43.38005052231341, -2.960312883095742];  // Coordenadas para el punto
+    var circleRadius = 200;  // Radio del círculo en metros
+
+    function showNotification() {
+  // Agrega un retraso de 3 segundos (3000 milisegundos) antes de redirigir
+  setTimeout(function() {
+    // Aquí puedes implementar la función para redirigir a "cam.html"
+    window.location.href = 'cam.html';
+  }, 3000);  // Retraso de 3 segundos
+}
+
+    function initMap() {
+      var map = L.map('map').setView([41.944544, -2.314262], 8);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+
+      // Añade un círculo de 200 metros
+      var circle = L.circle(pointCoords, {
+        color: 'red',
+        fillColor: '#f03',
+        fillOpacity: 0.3,
+        radius: circleRadius  // Radio en metros
+      }).addTo(map);
+      circle.bindPopup('Círculo de 200 metros');
+
+      navigator.geolocation.watchPosition(function(position) {
+        var lat = position.coords.latitude;
+        var lon = position.coords.longitude;
+
+        var marker;
+
+        if (typeof marker === 'undefined') {
+          marker = L.marker([lat, lon]).addTo(map);
+        } else {
+          marker.setLatLng([lat, lon]);
+        }
+
+        marker.setIcon(L.icon({
+          iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.2/img/marker-icon-2x.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [0, -22]
+        }));
+
+        // Verifica si el punto está dentro del círculo
+        var distance = marker.getLatLng().distanceTo(circle.getLatLng());
+        if (distance <= circleRadius) {
+          showNotification();
+        }
+
+        marker.bindPopup('Tu ubicación').openPopup();
+      }, function(error) {
+        alert('Error al obtener la ubicación: ' + error.message);
+      });
+    }
+
+    function goToCharacter() {
+      window.location.href = 'character.html';
+    }
+
+    initMap();
+  </script>
+</body>
+</html>

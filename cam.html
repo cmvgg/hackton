@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Acceso a la Cámara</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    video {
+      transform: scaleX(-1);
+      display: block;
+    }
+    #ar-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+</head>
+<body>
+  <video id="video" width="640" height="480" autoplay></video>
+  <canvas id="ar-overlay"></canvas>
+
+  <script>
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } })
+      .then(function(stream) {
+        var video = document.getElementById('video');
+        video.srcObject = stream;
+      })
+      .catch(function(err) {
+        console.error('Error al acceder a la cámara: ', err);
+      });
+  </script>
+</body>
+</html>
