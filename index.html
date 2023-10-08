@@ -18,11 +18,8 @@
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
-    var zona_coords = [
-    [43.375, -2.979508],  
-      [45.408234, 5.978508],  
-      [40.408234, -2.980508]
-    ];
+    var pointCoords = [43.38005052231341, -2.960312883095742];  // Coordenadas para el punto
+    var circleRadius = 200;  // Radio del círculo en metros
 
     function showNotification() {
       if (!("Notification" in window)) {
@@ -45,45 +42,44 @@
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
 
-      var polygon = L.polygon(zona_coords, { color: 'blue', fillOpacity: 0.3 }).addTo(map);
-      polygon.bindPopup("Zona señalada");
+      // Añade un círculo de 200 metros
+      var circle = L.circle(pointCoords, {
+        color: 'red',
+        fillColor: '#f03',
+        fillOpacity: 0.3,
+        radius: circleRadius  // Radio en metros
+      }).addTo(map);
+      circle.bindPopup("Círculo de 200 metros");
 
-      navigator.geolocation.getCurrentPosition(function(position) {
+      navigator.geolocation.watchPosition(function(position) {
         var lat = position.coords.latitude;
         var lon = position.coords.longitude;
 
-        var isInside = isPointInsidePolygon([lat, lon], zona_coords);
+        var marker;
 
-        if (isInside) {
-          showNotification();
+        if (typeof marker === 'undefined') {
+          marker = L.marker([lat, lon]).addTo(map);
+        } else {
+          marker.setLatLng([lat, lon]);
         }
 
-        var marker = L.marker([lat, lon]).addTo(map);
         marker.setIcon(L.icon({
           iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.2/img/marker-icon-2x.png',
           iconSize: [25, 41],
           iconAnchor: [12, 41],
           popupAnchor: [0, -22]
         }));
+
+        // Verifica si el punto está dentro del círculo
+        var distance = marker.getLatLng().distanceTo(circle.getLatLng());
+        if (distance <= circleRadius) {
+          showNotification();
+        }
+
         marker.bindPopup("Tu ubicación").openPopup();
       }, function(error) {
         alert("Error al obtener la ubicación: " + error.message);
       });
-    }
-
-    function isPointInsidePolygon(point, vs) {
-      var x = point[0], y = point[1];
-      var inside = false;
-
-      for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
-        var xi = vs[i][0], yi = vs[i][1];
-        var xj = vs[j][0], yj = vs[j][1];
-
-        var intersect = ((yi > y) !== (yj > y)) && (x < ((xj - xi) * (y - yi)) / (yj - yi) + xi);
-        if (intersect) inside = !inside;
-      }
-
-      return inside;
     }
 
     initMap();
